@@ -5,6 +5,7 @@ import type { EmergyIndices } from "@/types/emergy";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useSession } from "@/context/session-context";
 
 interface EmergySummaryProps {
   indices: EmergyIndices | null;
@@ -50,7 +51,9 @@ const cards = [
 ];
 
 export function EmergySummary({ indices }: EmergySummaryProps) {
-  if (!indices) {
+  const { mounted } = useSession();
+
+  if (!mounted || !indices) {
     return (
       <p className="text-muted-foreground">
         Nenhum cálculo realizado. Importe dados LCI e calcule a emergia.
@@ -71,7 +74,9 @@ export function EmergySummary({ indices }: EmergySummaryProps) {
             </CardHeader>
             <CardContent>
               <p className="font-mono text-2xl font-bold">
-                {key === "transformity" ? value.toExponential(2) : value.toFixed(2)}
+                {key === "transformity"
+                  ? value.toExponential(2)
+                  : value.toFixed(2)}
               </p>
               <p className="mt-1 text-xs text-muted-foreground">{desc}</p>
               {key !== "transformity" && (
@@ -113,7 +118,8 @@ export function SessionSummary({
           {new Date(createdAt).toLocaleString("pt-BR")}
         </p>
         <p>
-          <span className="text-muted-foreground">Processos:</span> {processCount}
+          <span className="text-muted-foreground">Processos:</span>{" "}
+          {processCount}
         </p>
       </CardContent>
     </Card>

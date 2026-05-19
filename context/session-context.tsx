@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import {
@@ -16,6 +17,7 @@ interface SessionContextValue {
   session: CalculationSession | null;
   draftLci: LCIMatrix | null;
   draftUev: UEVTable | null;
+  mounted: boolean;
   setDraftLci: (lci: LCIMatrix | null) => void;
   setDraftUev: (uev: UEVTable | null) => void;
   saveSession: (session: CalculationSession) => void;
@@ -25,42 +27,50 @@ interface SessionContextValue {
 const SessionContext = createContext<SessionContextValue | null>(null);
 
 export function SessionProvider({ children }: { children: React.ReactNode }) {
-  const [session, setSession] = useState<CalculationSession | null>(null);
   const [draftLci, setDraftLci] = useState<LCIMatrix | null>(null);
   const [draftUev, setDraftUev] = useState<UEVTable | null>(null);
-  const [hydrated, setHydrated] = useState(false);
+  const [session, setSession] = useState<CalculationSession | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) setSession(JSON.parse(raw) as CalculationSession);
     } catch {
-      /* ignore */
+      // ignore
     }
-    setHydrated(true);
+    setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    if (session) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
+    } else {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  }, [session, mounted]);
 
   const saveSession = useCallback((next: CalculationSession) => {
     setSession(next);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
   }, []);
 
   const clearSession = useCallback(() => {
     setSession(null);
-    localStorage.removeItem(STORAGE_KEY);
   }, []);
 
   const value = useMemo(
     () => ({
-      session: hydrated ? session : null,
+      session,
       draftLci,
       draftUev,
+      mounted,
       setDraftLci,
       setDraftUev,
       saveSession,
       clearSession,
     }),
-    [hydrated, session, draftLci, draftUev, saveSession, clearSession]
+    [session, draftLci, draftUev, mounted, saveSession, clearSession],
   );
 
   return (

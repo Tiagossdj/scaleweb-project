@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AppShell } from "@/components/layout/app-shell";
 import { LCIImporter } from "@/components/lci/lci-importer";
@@ -16,16 +16,13 @@ import type { LCIMatrix, UEVTable } from "@/types/emergy";
 
 export default function LCIPage() {
   const router = useRouter();
-  const { draftLci, draftUev, setDraftLci, setDraftUev, saveSession } = useSession();
-  const [lci, setLci] = useState<LCIMatrix | null>(draftLci);
+  const { draftLci, draftUev, setDraftLci, setDraftUev, saveSession } =
+    useSession();
+  const [lci, setLci] = useState<LCIMatrix | null>(draftLci ?? null);
+
   const [uev, setUev] = useState<UEVTable>(draftUev ?? {});
   const [sessionName, setSessionName] = useState("Análise SCALE-Web");
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (draftLci) setLci(draftLci);
-    if (draftUev) setUev(draftUev);
-  }, [draftLci, draftUev]);
 
   function handleImport(imported: LCIMatrix, name?: string) {
     setLci(imported);

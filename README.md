@@ -16,9 +16,7 @@
 
 ## Demo ao vivo
 
-> Adicione a URL após o deploy na Vercel.
-
-- **Frontend:** `https://seu-projeto.vercel.app`
+- **Frontend:** `scaleweb-project.vercel.app`
 
 ---
 
@@ -66,16 +64,19 @@ Desenvolvido como APS da disciplina de Engenharia de Software — UNIP, 7º Seme
 ## Arquitetura
 
 ```mermaid
-flowchart LR
-    CSV["CSV / Excel"] --> Parser["lib/parsers"]
-    Parser --> LCI["LCIMatrix"]
-    LCI --> Calculator["lib/emergy/calculator"]
-    UEV["UEVTable"] --> Calculator
-    Calculator --> Algebra["lib/emergy/algebra"]
-    Algebra --> Session["CalculationSession"]
-    Session --> Dashboard["/dashboard"]
-    Session --> Results["/results"]
-    Session --> Storage["localStorage"]
+---
+config:
+  theme: neo
+  look: neo
+---
+flowchart TB
+    A["Arquivo CSV ou Excel"] --> B["Parser Factory"]
+    B --> C["LCIMatrix"]
+    D["UEVTable"] --> E["Emergy Calculator"]
+    C --> E
+    E --> F["Emergy Algebra"]
+    F --> G["Calculation Session"]
+    G --> H["Dashboard"] & I["Results Page"] & J["localStorage"]
 ```
 
 **Padrões aplicados:**
@@ -97,17 +98,20 @@ scaleweb-project/
 │   ├── dashboard/page.tsx      # Índices + gráfico Recharts
 │   ├── lci/page.tsx            # Importação, matriz, UEVs, cálculo
 │   ├── results/page.tsx        # D3, tabelas, export CSV/PDF
-│   └── api/calculate/route.ts  # API opcional de cálculo
+│   ├── api/calculate/route.ts  # API opcional de cálculo
+│   └── page.tsx                # Landing/home
 ├── components/
-│   ├── emergy/                 # EmergySummary, EmergyBarChart, EmergyFlowChart
+│   ├── emergy/                 # EmergySummary, EmergyBarChart, EmergyFlowChart, EmergyStackedChart
 │   ├── lci/                    # LCIImporter, MatrixEditor, MatrixPreview
 │   ├── layout/                 # Sidebar, Navbar, AppShell
-│   └── ui/                     # Button, Card, Table, Badge, FileUpload
+│   ├── providers/              # ThemeProvider
+│   └── ui/                     # Button, Card, Table, Badge, FileUpload, Tabs
 ├── lib/
 │   ├── emergy/                 # algebra, calculator, transformers
 │   ├── parsers/                # csvParser, excelParser
-│   ├── lci-samples.ts          # Metadados dos 3 exemplos
-│   └── export/csv-export.ts
+│   ├── export/                 # csv-export.ts
+│   ├── chart-colors.ts
+│   └── lci-samples.ts
 ├── context/session-context.tsx
 ├── types/emergy.ts
 ├── __tests__/                  # algebra.test.ts, calculator.test.ts
