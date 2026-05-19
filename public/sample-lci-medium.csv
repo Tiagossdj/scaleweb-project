@@ -1,0 +1,6 @@
+process;Extracao;Refino;Fabricacao;Distribuicao;Uso
+Eletricidade;0.05;0.15;0.25;0.08;0.10
+Combustivel;0.20;0.10;0.05;0.12;0.08
+Agua;0.15;0.20;0.10;0.05;0.03
+Materia_Prima;0;0.30;0.15;0;0
+Mao_de_Obra;0.10;0.08;0.12;0.06;0.05

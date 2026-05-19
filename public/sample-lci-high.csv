@@ -1,0 +1,9 @@
+process;Mineracao;Beneficiamento;Sinterizacao;Alto_Forno;Laminacao;Galvanizacao;Montagem;Reciclagem
+Eletricidade;0.08;0.12;0.15;0.20;0.18;0.14;0.10;0.05
+Gas_Natural;0.05;0.08;0.10;0.12;0.06;0.04;0.02;0.01
+Carvao;0.25;0.15;0.20;0.18;0.05;0.02;0;0.03
+Agua;0.12;0.10;0.08;0.15;0.10;0.08;0.05;0.04
+Minerio;0;0.35;0.10;0.05;0;0;0;0.08
+Aco;0;0;0.15;0.20;0.25;0.12;0.18;0.10
+Quimicos;0.02;0.05;0.08;0.06;0.10;0.22;0.08;0.02
+Transporte;0.06;0.05;0.04;0.05;0.04;0.03;0.04;0.06
