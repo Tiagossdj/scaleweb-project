@@ -16,7 +16,7 @@
 
 ## Demo ao vivo
 
-- **Frontend:** `scaleweb-project.vercel.app`
+- **Frontend:** scaleweb-project.vercel.app
 
 ---
 
